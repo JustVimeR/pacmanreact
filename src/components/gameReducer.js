@@ -1,23 +1,59 @@
-export const LEVEL = [
-    [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ],
-    [ 1,3,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
-    [ 1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,4,1,1,1,2,1 ],
-    [ 1,2,2,2,2,2,2,1,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
-    [ 1,1,1,2,1,1,2,1,2,1,1,1,2,1,1,2,1,2,1,2,1 ],
-    [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,2,1 ],
-    [ 1,2,1,1,2,1,2,1,1,1,2,1,1,1,2,1,1,2,1,2,1 ],
-    [ 1,2,1,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,2,1 ],
-    [ 1,2,1,1,2,2,2,1,2,2,2,2,2,1,2,1,1,1,1,2,1 ],
-    [ 1,2,1,1,2,1,2,1,1,1,1,1,1,1,2,1,1,1,1,2,1 ],
-    [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1 ],
-    [ 1,1,1,2,1,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1 ],
-    [ 1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,1 ],
-    [ 1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1 ],
-    [ 1,2,2,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
-    [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
+export const LEVELS = [
+
+    [
+      [1,1,1,1,1,1,1,1,1],
+      [1,3,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,1,2,1],
+      [1,2,2,2,2,2,1,2,1],
+      [1,2,1,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,1,1,1]
+    ],
+    
+    [
+      [1,1,1,1,1,1,1,1,1,1,1],
+      [1,3,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,1,1,1,2,1],
+      [1,2,1,2,2,2,1,2,2,2,1],
+      [1,2,1,2,1,2,1,2,1,2,1],
+      [1,2,1,2,1,2,2,2,2,2,1],
+      [1,2,1,2,1,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,1,1,1,1,1]
+    ],
+    
+    [
+      [1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,3,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,1,1,1,1,2,1],
+      [1,2,1,2,2,2,1,2,2,2,2,1],
+      [1,2,1,2,1,2,1,2,1,2,1,1],
+      [1,2,2,2,2,2,2,2,2,2,4,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1]
+    ],
+    [
+        [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ],
+        [ 1,3,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
+        [ 1,2,1,1,1,2,1,1,1,2,1,2,1,1,1,4,1,1,1,2,1 ],
+        [ 1,2,2,2,2,2,2,1,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
+        [ 1,1,1,2,1,1,2,1,2,1,1,1,2,1,1,2,1,2,1,2,1 ],
+        [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,2,1 ],
+        [ 1,2,1,1,2,1,2,1,1,1,2,1,1,1,2,1,1,2,1,2,1 ],
+        [ 1,2,1,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,2,1 ],
+        [ 1,2,1,1,2,2,2,1,2,2,2,2,2,1,2,1,1,1,1,2,1 ],
+        [ 1,2,1,1,2,1,2,1,1,1,1,1,1,1,2,1,1,1,1,2,1 ],
+        [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1 ],
+        [ 1,1,1,2,1,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1 ],
+        [ 1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,1 ],
+        [ 1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1 ],
+        [ 1,2,2,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
+        [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
+    ]
+   
   ];
   
-  export const COLOR = ["#ccc", "#444", "yellow", "green", "red"];
+  
+  export const COLOR = ["#ccc", "black", "yellow", "green", "red"];
   
   export const GAME_STATUS = {
     Running: "RUNNING",
@@ -47,8 +83,10 @@ export const LEVEL = [
     Down: 40,
   };
   
-  export function getInitialState() {
+  export function getInitialState(levelIndex = 0) {
+    const LEVEL = LEVELS[levelIndex]; 
     let level = [], pacman = {position: {x: 0, y: 0}, direction:{x: 0, y: 0}}, ghost = [];
+  
     for (let y = 0; y < LEVEL.length; y++) {
       level[y] = [];
       for (let x = 0; x < LEVEL[y].length; x++) {
@@ -64,13 +102,27 @@ export const LEVEL = [
           level[y][x] = LEVEL[y][x];
       }
     }
-    return { status: GAME_STATUS.Running, level, pacman, ghost, tickCounter: 0 }; 
+  
+    return { status: GAME_STATUS.Running, level, pacman, ghost, tickCounter: 0, levelIndex };
   }
   
   export function gameReducer(state, action) {
     switch (action.type) {
       case ACTION.Restart: {
-        return getInitialState();
+        return getInitialState(state.levelIndex); 
+      }
+  
+      case ACTION.ChangeLevel: {
+        return getInitialState(action.levelIndex); 
+      }
+  
+      case ACTION.NextLevel: {
+        const nextLevelIndex = state.levelIndex + 1;
+        if (nextLevelIndex < LEVELS.length) {
+          return getInitialState(nextLevelIndex); 
+        } else {
+          return { ...state, status: GAME_STATUS.Done };
+        }
       }
   
       case ACTION.Move: {
@@ -87,23 +139,21 @@ export const LEVEL = [
         for (let row of state.level)
           for (let item of row)
             if (item === ITEM.Food) isDone = false;
-        if (isDone) return { ...state, status: GAME_STATUS.Done };
+        if (isDone) {
+          return { ...state, status: GAME_STATUS.Done };
+        }
   
-        // 1. Рух Pacman
         let newPacmanPosition = {
           x: state.pacman.position.x + state.pacman.direction.x,
           y: state.pacman.position.y + state.pacman.direction.y,
         };
   
-        // Перевірка на стіну
         if (state.level[newPacmanPosition.y][newPacmanPosition.x] === ITEM.Wall)
           newPacmanPosition = { ...state.pacman.position };
   
-        // Оновлення рівня (видаляємо їжу, якщо Pacman пройшов по ній)
         let newLevel = state.level.map((row) => row.slice());
         newLevel[newPacmanPosition.y][newPacmanPosition.x] = ITEM.Playground;
   
-        // 2. Рух привидів 
         let newGhost = state.ghost.map((g) => {
           if (state.tickCounter % 4 === 0) {
             let nextStep = bfs(state.level, g, newPacmanPosition);
@@ -114,7 +164,6 @@ export const LEVEL = [
           return g;
         });
   
-        // Перевірка на зіткнення з привидом
         if (newGhost.find((g) => g.x === newPacmanPosition.x && g.y === newPacmanPosition.y))
           return { ...state, pacman: { ...state.pacman, position: newPacmanPosition }, status: GAME_STATUS.GameOver };
   
@@ -123,7 +172,7 @@ export const LEVEL = [
           pacman: { ...state.pacman, position: newPacmanPosition },
           level: newLevel,
           ghost: newGhost,
-          tickCounter: state.tickCounter + 1, 
+          tickCounter: state.tickCounter + 1,
         };
       }
   
@@ -131,6 +180,7 @@ export const LEVEL = [
         return state;
     }
   }
+  
   
   
 

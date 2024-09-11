@@ -1,14 +1,15 @@
-import { useReducer, useEffect } from 'react';
-import { gameReducer, getInitialState, ACTION, GAME_STATUS, SPEED, CONTROL, ITEM, COLOR } from './gameReducer';
+import { useReducer, useEffect, useState } from 'react';
+import { gameReducer, getInitialState, ACTION, GAME_STATUS, SPEED, CONTROL, ITEM, COLOR, LEVELS } from './gameReducer';
 import { useInterval } from './useInterval';
 import Box from './Box';
 
 export default function PacmanGame() {
-  let [state, dispatch] = useReducer(gameReducer, getInitialState());
+  const [levelIndex, setLevelIndex] = useState(0); // Вибраний рівень
+  const [state, dispatch] = useReducer(gameReducer, getInitialState(levelIndex));
 
-  useInterval(() => { 
+  useInterval(() => {
     if (state.status === GAME_STATUS.Running) {
-      dispatch({ type: ACTION.TimeTick }); 
+      dispatch({ type: ACTION.TimeTick });
     }
   }, state.status === GAME_STATUS.Running ? SPEED : null);
 
@@ -21,27 +22,50 @@ export default function PacmanGame() {
     }
 
     document.addEventListener('keydown', handleGameAction);
-
     return () => {
       document.removeEventListener('keydown', handleGameAction);
     };
   }, []);
 
+  function handleLevelChange(e) {
+    const newLevelIndex = parseInt(e.target.value);
+    setLevelIndex(newLevelIndex); 
+    dispatch({ type: ACTION.ChangeLevel, levelIndex: newLevelIndex });
+  }
+
   return (
     <div className="PacmanGame">
-      <div>React Pacman. controls: LEFT, RIGHT, UP, DOWN. <br />characters: green=pacman, red=ghost, darkgrey=food, lightgrey=no food, black=wall</div>
+      <div>
+        <label>Choose Level: </label>
+        <select value={levelIndex} onChange={handleLevelChange}>
+          {LEVELS.map((_, index) => (
+            <option key={index} value={index}>
+              Level {index + 1}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <button onClick={() => dispatch({ type: ACTION.Restart })}>Restart level</button>
       {state.status === GAME_STATUS.GameOver && <h3>Killed, try again!</h3>}
-      {state.status === GAME_STATUS.Done && <h3>Level completed!</h3>}
+      {state.status === GAME_STATUS.Done && (
+        <div>
+          {state.levelIndex + 1 < LEVELS.length ? (
+            <div>
+              <h3>Level completed! Proceed to the next level.</h3>
+              <button onClick={() => dispatch({ type: ACTION.NextLevel })}>Next Level</button>
+            </div>
+          ) : (
+            <h3>All levels completed! Congratulations!</h3>
+          )}
+        </div>
+      )}
+
       {[...state.level].map((row, y) => {
         return (
           <div key={y} style={{ display: 'block', lineHeight: 0 }}>
             {row.map((col, x) => (
-              <Box
-                key={`${y}-${x}`}
-                content={state.level[y][x]}
-                color={getBoxColor(state, x, y)}
-              />
+              <Box key={`${y}-${x}`} content={state.level[y][x]} color={getBoxColor(state, x, y)} />
             ))}
           </div>
         );
