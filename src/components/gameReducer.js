@@ -7,11 +7,11 @@ export const LEVEL = [
     [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,2,1 ],
     [ 1,2,1,1,2,1,2,1,1,1,2,1,1,1,2,1,1,2,1,2,1 ],
     [ 1,2,1,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,2,1 ],
-    [ 1,2,1,1,2,2,2,1,2,2,4,2,2,1,2,1,1,1,1,2,1 ],
+    [ 1,2,1,1,2,2,2,1,2,2,2,2,2,1,2,1,1,1,1,2,1 ],
     [ 1,2,1,1,2,1,2,1,1,1,1,1,1,1,2,1,1,1,1,2,1 ],
     [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1 ],
     [ 1,1,1,2,1,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1 ],
-    [ 1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,4,2,2,1 ],
+    [ 1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,1 ],
     [ 1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1 ],
     [ 1,2,2,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
     [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
@@ -48,40 +48,41 @@ export const LEVEL = [
   };
   
   export function getInitialState() {
-    let level = [], pacman = {position: {x: 0, y: 0}, direction:{x: 0, y: 0}}, ghost = []
-    for (let y=0; y<LEVEL.length; y++) {                         
-      level[y] = []
-      for (let x=0; x<LEVEL[y].length; x++) {
-        if ( LEVEL[y][x] === ITEM.Ghost )  
-          ghost.push({x, y, isMoving: ghost.length%2===0 })     
-        if ( LEVEL[y][x] === ITEM.Pacman ) 
-          pacman = {position: {x, y}, direction: {x: -1, y: 0}} 
-        if ( LEVEL[y][x] === ITEM.Ghost )                        
-          level[y][x] = ITEM.Food                         
-        else if ( LEVEL[y][x] === ITEM.Pacman )                   
-          level[y][x] = ITEM.Playground 
-        else  
-          level[y][x] = LEVEL[y][x]                               
+    let level = [], pacman = {position: {x: 0, y: 0}, direction:{x: 0, y: 0}}, ghost = [];
+    for (let y = 0; y < LEVEL.length; y++) {
+      level[y] = [];
+      for (let x = 0; x < LEVEL[y].length; x++) {
+        if (LEVEL[y][x] === ITEM.Ghost)
+          ghost.push({ x, y, isMoving: ghost.length % 2 === 0 });
+        if (LEVEL[y][x] === ITEM.Pacman)
+          pacman = { position: { x, y }, direction: { x: -1, y: 0 } };
+        if (LEVEL[y][x] === ITEM.Ghost)
+          level[y][x] = ITEM.Food;
+        else if (LEVEL[y][x] === ITEM.Pacman)
+          level[y][x] = ITEM.Playground;
+        else
+          level[y][x] = LEVEL[y][x];
       }
     }
-    return { status: GAME_STATUS.Running, level, pacman, ghost }
+    return { status: GAME_STATUS.Running, level, pacman, ghost, tickCounter: 0 }; 
   }
-  
   
   export function gameReducer(state, action) {
     switch (action.type) {
-      case ACTION.Restart:
-        return getInitialState(); 
+      case ACTION.Restart: {
+        return getInitialState();
+      }
   
-      case ACTION.Move:
+      case ACTION.Move: {
         let d = { x: 0, y: 0 };
         if (CONTROL.Left === action.keyCode) d.x--;
         if (CONTROL.Right === action.keyCode) d.x++;
         if (CONTROL.Up === action.keyCode) d.y--;
         if (CONTROL.Down === action.keyCode) d.y++;
         return { ...state, pacman: { ...state.pacman, direction: d } };
+      }
   
-      case ACTION.TimeTick:
+      case ACTION.TimeTick: {
         let isDone = true;
         for (let row of state.level)
           for (let item of row)
@@ -98,33 +99,40 @@ export const LEVEL = [
         if (state.level[newPacmanPosition.y][newPacmanPosition.x] === ITEM.Wall)
           newPacmanPosition = { ...state.pacman.position };
   
-        // 2. Рух привидів за допомогою BFS
-        let newGhost = state.ghost.map((g) => {
-          let nextStep = bfs(state.level, g, newPacmanPosition);
+        // Оновлення рівня (видаляємо їжу, якщо Pacman пройшов по ній)
+        let newLevel = state.level.map((row) => row.slice());
+        newLevel[newPacmanPosition.y][newPacmanPosition.x] = ITEM.Playground;
   
-          if (nextStep) {
-            if (nextStep.x === newPacmanPosition.x && nextStep.y === newPacmanPosition.y) {
+        // 2. Рух привидів 
+        let newGhost = state.ghost.map((g) => {
+          if (state.tickCounter % 4 === 0) {
+            let nextStep = bfs(state.level, g, newPacmanPosition);
+            if (nextStep) {
               return { ...g, x: nextStep.x, y: nextStep.y };
             }
-            return { ...g, x: nextStep.x, y: nextStep.y };
           }
           return g;
         });
   
-        // 3. Перевірка на зіткнення з привидом
+        // Перевірка на зіткнення з привидом
         if (newGhost.find((g) => g.x === newPacmanPosition.x && g.y === newPacmanPosition.y))
           return { ...state, pacman: { ...state.pacman, position: newPacmanPosition }, status: GAME_STATUS.GameOver };
   
-        // 4. Оновлення рівня (видаляємо їжу, якщо Pacman пройшов по ній)
-        let newLevel = state.level.map((row) => row.slice());
-        newLevel[newPacmanPosition.y][newPacmanPosition.x] = ITEM.Playground;
-  
-        return { ...state, pacman: { ...state.pacman, position: newPacmanPosition }, level: newLevel, ghost: newGhost };
+        return {
+          ...state,
+          pacman: { ...state.pacman, position: newPacmanPosition },
+          level: newLevel,
+          ghost: newGhost,
+          tickCounter: state.tickCounter + 1, 
+        };
+      }
   
       default:
         return state;
     }
   }
+  
+  
 
   function bfs(level, start, target) {
     const queue = [];
