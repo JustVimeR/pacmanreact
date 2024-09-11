@@ -74,7 +74,6 @@ export const LEVEL = [
         return getInitialState(); 
   
       case ACTION.Move:
-        // Переміщення Pacman на основі введення з клавіатури
         let d = { x: 0, y: 0 };
         if (CONTROL.Left === action.keyCode) d.x--;
         if (CONTROL.Right === action.keyCode) d.x++;
@@ -83,7 +82,6 @@ export const LEVEL = [
         return { ...state, pacman: { ...state.pacman, direction: d } };
   
       case ACTION.TimeTick:
-        // Основна логіка гри (як раніше)
         let isDone = true;
         for (let row of state.level)
           for (let item of row)
