@@ -4,7 +4,7 @@ import { useInterval } from './useInterval';
 import Box from './Box';
 
 export default function PacmanGame() {
-  const [levelIndex, setLevelIndex] = useState(0); // Вибраний рівень
+  const [levelIndex, setLevelIndex] = useState(0);
   const [state, dispatch] = useReducer(gameReducer, getInitialState(levelIndex));
 
   useInterval(() => {
