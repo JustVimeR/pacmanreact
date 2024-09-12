@@ -40,7 +40,7 @@ export const LEVELS = [
         [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,2,1 ],
         [ 1,2,1,1,2,1,2,1,1,1,2,1,1,1,2,1,1,2,1,2,1 ],
         [ 1,2,1,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,2,1 ],
-        [ 1,2,1,1,2,2,2,1,2,2,2,2,2,1,2,1,1,1,1,2,1 ],
+        [ 1,2,1,1,2,2,2,1,2,2,4,2,2,1,2,1,1,1,1,2,1 ],
         [ 1,2,1,1,2,1,2,1,1,1,1,1,1,1,2,1,1,1,1,2,1 ],
         [ 1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1 ],
         [ 1,1,1,2,1,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1 ],
@@ -48,6 +48,15 @@ export const LEVELS = [
         [ 1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1 ],
         [ 1,2,2,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,2,2,1 ],
         [ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
+    ],
+    [
+      [1,1,1,1,1,1,1],
+      [1,4,2,2,2,4,1],
+      [1,2,1,2,1,2,1],
+      [1,2,2,3,2,2,1],
+      [1,2,1,2,1,2,1],
+      [1,4,2,2,2,4,1],
+      [1,1,1,1,1,1,1],
     ]
    
   ];
@@ -109,17 +118,17 @@ export const LEVELS = [
   export function gameReducer(state, action) {
     switch (action.type) {
       case ACTION.Restart: {
-        return getInitialState(state.levelIndex); 
+        return getInitialState(state.levelIndex);
       }
   
       case ACTION.ChangeLevel: {
-        return getInitialState(action.levelIndex); 
+        return getInitialState(action.levelIndex);
       }
   
       case ACTION.NextLevel: {
         const nextLevelIndex = state.levelIndex + 1;
         if (nextLevelIndex < LEVELS.length) {
-          return getInitialState(nextLevelIndex); 
+          return getInitialState(nextLevelIndex);
         } else {
           return { ...state, status: GAME_STATUS.Done };
         }
@@ -154,18 +163,21 @@ export const LEVELS = [
         let newLevel = state.level.map((row) => row.slice());
         newLevel[newPacmanPosition.y][newPacmanPosition.x] = ITEM.Playground;
   
-        let newGhost = state.ghost.map((g) => {
-          if (state.tickCounter % 4 === 0) {
-            let nextStep = bfs(state.level, g, newPacmanPosition);
-            if (nextStep) {
-              return { ...g, x: nextStep.x, y: nextStep.y };
-            }
+        let targetPositions = getSurroundingPositions(newPacmanPosition, state.level);
+        let newGhost = state.ghost.map((g, index) => {
+      
+          let target = targetPositions[index % targetPositions.length];
+  
+          if (g.x === target.x && g.y === target.y) {
+            return g; 
+          }
+  
+          let nextStep = bfs(state.level, g, target);
+          if (nextStep) {
+            return { ...g, x: nextStep.x, y: nextStep.y };
           }
           return g;
         });
-  
-        if (newGhost.find((g) => g.x === newPacmanPosition.x && g.y === newPacmanPosition.y))
-          return { ...state, pacman: { ...state.pacman, position: newPacmanPosition }, status: GAME_STATUS.GameOver };
   
         return {
           ...state,
@@ -180,6 +192,29 @@ export const LEVELS = [
         return state;
     }
   }
+  
+  function getSurroundingPositions(pacmanPosition, level) {
+    const positions = [];
+  
+    if (pacmanPosition.x + 1 < level[0].length && level[pacmanPosition.y][pacmanPosition.x + 1] !== ITEM.Wall) {
+      positions.push({ x: pacmanPosition.x + 1, y: pacmanPosition.y });
+    }
+
+    if (pacmanPosition.x - 1 >= 0 && level[pacmanPosition.y][pacmanPosition.x - 1] !== ITEM.Wall) {
+      positions.push({ x: pacmanPosition.x - 1, y: pacmanPosition.y });
+    }
+  
+    if (pacmanPosition.y + 1 < level.length && level[pacmanPosition.y + 1][pacmanPosition.x] !== ITEM.Wall) {
+      positions.push({ x: pacmanPosition.x, y: pacmanPosition.y + 1 });
+    }
+  
+    if (pacmanPosition.y - 1 >= 0 && level[pacmanPosition.y - 1][pacmanPosition.x] !== ITEM.Wall) {
+      positions.push({ x: pacmanPosition.x, y: pacmanPosition.y - 1 });
+    }
+  
+    return positions;
+  }
+  
   
   
   

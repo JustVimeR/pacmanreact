@@ -34,42 +34,44 @@ export default function PacmanGame() {
   }
 
   return (
-    <div className="PacmanGame">
-      <div>
-        <label>Choose Level: </label>
-        <select value={levelIndex} onChange={handleLevelChange}>
-          {LEVELS.map((_, index) => (
-            <option key={index} value={index}>
-              Level {index + 1}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <button onClick={() => dispatch({ type: ACTION.Restart })}>Restart level</button>
-      {state.status === GAME_STATUS.GameOver && <h3>Killed, try again!</h3>}
-      {state.status === GAME_STATUS.Done && (
+    <div style={{position: "absolute", top: 80, left: 200}}>
+      <div className="PacmanGame">
         <div>
-          {state.levelIndex + 1 < LEVELS.length ? (
-            <div>
-              <h3>Level completed! Proceed to the next level.</h3>
-              <button onClick={() => dispatch({ type: ACTION.NextLevel })}>Next Level</button>
-            </div>
-          ) : (
-            <h3>All levels completed! Congratulations!</h3>
-          )}
-        </div>
-      )}
-
-      {[...state.level].map((row, y) => {
-        return (
-          <div key={y} style={{ display: 'block', lineHeight: 0 }}>
-            {row.map((col, x) => (
-              <Box key={`${y}-${x}`} content={state.level[y][x]} color={getBoxColor(state, x, y)} />
+          <label>Choose Level: </label>
+          <select value={levelIndex} onChange={handleLevelChange}>
+            {LEVELS.map((_, index) => (
+              <option key={index} value={index}>
+                Level {index + 1}
+              </option>
             ))}
+          </select>
+        </div>
+
+        <button onClick={() => dispatch({ type: ACTION.Restart })}>Restart level</button>
+        {state.status === GAME_STATUS.GameOver && <h3>Killed, try again!</h3>}
+        {state.status === GAME_STATUS.Done && (
+          <div>
+            {state.levelIndex + 1 < LEVELS.length ? (
+              <div>
+                <h3>Level completed! Proceed to the next level.</h3>
+                <button onClick={() => dispatch({ type: ACTION.NextLevel })}>Next Level</button>
+              </div>
+            ) : (
+              <h3>All levels completed! Congratulations!</h3>
+            )}
           </div>
-        );
-      })}
+        )}
+
+        {[...state.level].map((row, y) => {
+          return (
+            <div key={y} style={{ display: 'block', lineHeight: 0 }}>
+              {row.map((col, x) => (
+                <Box key={`${y}-${x}`} content={state.level[y][x]} color={getBoxColor(state, x, y)} />
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
