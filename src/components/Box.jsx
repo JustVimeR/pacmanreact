@@ -7,6 +7,7 @@ export default function Box({ color }) {
           display: 'inline-block',
           backgroundColor: color,
           border: '1px solid #ccc',
+          borderRadius: '4px'
         }}
       />
     );
